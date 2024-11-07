@@ -12,7 +12,11 @@
     devShells.x86_64-linux.default = pkgs.mkShell {
       packages = with pkgs; [
         nil
+        nodePackages_latest.typescript-language-server
         nodejs_22
+        php83Packages.composer
+        phpactor
+        php83
       ];
     };
   };
