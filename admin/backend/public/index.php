@@ -28,16 +28,19 @@ $router = \FastRoute\simpleDispatcher(function (\FastRoute\RouteCollector $r) {
     $r->get('/', Home::class);
 });
 $result = $router->dispatch($request->getMethod(), $request->getUri()->getPath());
-switch ($result) {
+switch ($result[0]) {
     case Dispatcher::METHOD_NOT_ALLOWED:
         $handler = new MethodNotAllowedHandler($result[1]);
         break;
+
     case Dispatcher::FOUND:
         $handler = $container->get($result[1]);
         foreach ($result[2] as $variableName => $variableValue) {
             $request = $request->withAttribute($variableName, $variableValue);
         }
+        
         break;
+
     case Dispatcher::NOT_FOUND:
     default:
         $handler = new NotFoundHandler();
