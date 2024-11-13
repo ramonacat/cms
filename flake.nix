@@ -16,7 +16,7 @@
         nodejs_22
         php83Packages.composer
         phpactor
-        php83
+        (php83.buildEnv {extensions = {enabled, all}: enabled ++ [all.xdebug];})
       ];
     };
   };

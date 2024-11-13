@@ -3,7 +3,8 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Ramona\\CMS\\Admin\\": "src/"
+            "Ramona\\CMS\\Admin\\": "src/",
+            "Tests\\Ramona\\CMS\\Admin\\": "tests/"
         }
     },
     "authors": [
@@ -21,10 +22,19 @@
         "nyholm/psr7-server": "^1.1",
         "psr/http-server-middleware": "^1.0",
         "psr/container": "^2.0",
-        "php-di/php-di": "^7.0"
+        "php-di/php-di": "^7.0",
+        "thecodingmachine/safe": "^2.5"
     },
     "require-dev": {
         "symplify/easy-coding-standard": "^12.3",
-        "phpstan/phpstan": "^1.12"
+        "phpstan/phpstan": "^1.0",
+        "phpunit/phpunit": "^11.4",
+        "thecodingmachine/phpstan-safe-rule": "^1.2",
+        "phpstan/extension-installer": "^1.4"
+    },
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        }
     }
 }
