@@ -1,12 +1,13 @@
 import {beforeAll, describe, expect, it} from '@jest/globals';
 
+const BASE_URL = 'http://localhost:7979';
+
 describe('homepage', () => { 
     beforeAll(async () => {
-        await page.goto('http://localhost:7979/');
+        await page.goto(BASE_URL);
     });
     
-    it('Should say hello', async () => {
-        const content = await page.content();
-        expect(content).toContain('Hello');
+    it('Should redirect to the login page', async () => {
+        expect(page.url()).toBe(BASE_URL + "/login");
     });
 });

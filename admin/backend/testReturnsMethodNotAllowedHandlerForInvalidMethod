@@ -1,0 +1,22 @@
+<?php return array (
+  0 => 
+  array (
+    'GET' => 
+    array (
+      '/' => 
+      array (
+        0 => 'Ramona\\CMS\\Admin\\Home',
+        1 => 
+        array (
+          '_route' => '/',
+        ),
+      ),
+    ),
+  ),
+  1 => 
+  array (
+  ),
+  2 => 
+  array (
+  ),
+);

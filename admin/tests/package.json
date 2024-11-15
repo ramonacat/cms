@@ -10,5 +10,8 @@
     "jest-puppeteer": "^10.1.4",
     "puppeteer": "^23.7.1",
     "ts-node": "^10.9.2"
+  },
+  "scripts": {
+    "test": "jest"
   }
 }

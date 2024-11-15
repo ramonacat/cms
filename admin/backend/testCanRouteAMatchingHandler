@@ -1,0 +1,34 @@
+<?php return array (
+  0 => 
+  array (
+  ),
+  1 => 
+  array (
+    'GET' => 
+    array (
+      0 => 
+      array (
+        'regex' => '~^(?|/rainbows/([^/]+)/([^/]+)(*MARK:a))$~',
+        'routeMap' => 
+        array (
+          'a' => 
+          array (
+            0 => 'Tests\\Ramona\\CMS\\Admin\\HandlerMock',
+            1 => 
+            array (
+              'a' => 'a',
+              'b' => 'b',
+            ),
+            2 => 
+            array (
+              '_route' => '/rainbows/{a}/{b}',
+            ),
+          ),
+        ),
+      ),
+    ),
+  ),
+  2 => 
+  array (
+  ),
+);

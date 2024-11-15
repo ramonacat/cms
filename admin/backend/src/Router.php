@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Ramona\CMS\Admin;
 
-use Closure;
 use FastRoute\Dispatcher;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -13,19 +12,19 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class Router
 {
-    /**
-     * @param Closure(\FastRoute\RouteCollector):void $registerRoutes
-     */
     public function __construct(
         private ContainerInterface $container,
-        private Closure $registerRoutes
+        private \FastRoute\Dispatcher $dispatcher
     ) {
     }
 
     public function route(ServerRequestInterface $request): ResponseInterface
     {
-        $router = \FastRoute\simpleDispatcher($this->registerRoutes);
-        $result = $router->dispatch($request->getMethod(), $request->getUri()->getPath());
+        $result = $this->dispatcher->dispatch(
+            $request->getMethod(),
+            $request->getUri()->getPath()
+        );
+
         switch ($result[0]) {
             case Dispatcher::METHOD_NOT_ALLOWED:
                 /** @var array{int, list<string>} $result */

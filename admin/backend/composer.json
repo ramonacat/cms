@@ -16,7 +16,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "nikic/fast-route": "^1.3",
+        "nikic/fast-route": "^2.0",
         "nyholm/psr7": "^1.8",
         "laminas/laminas-httphandlerrunner": "^2.11",
         "nyholm/psr7-server": "^1.1",

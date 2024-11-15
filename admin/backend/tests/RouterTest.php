@@ -2,15 +2,13 @@
 
 namespace Tests\Ramona\CMS\Admin;
 
-use FastRoute\RouteCollector;
-use Nyholm\Psr7\Request;
+use FastRoute\ConfigureRoutes;
+use FastRoute\FastRoute;
 use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Ramona\CMS\Admin\Home;
-use Ramona\CMS\Admin\MethodNotAllowedHandler;
-use Ramona\CMS\Admin\NotFoundHandler;
 use Ramona\CMS\Admin\Router;
 
 final class RouterTest extends TestCase {
@@ -23,9 +21,10 @@ final class RouterTest extends TestCase {
 
     public function testReturnsMethodNotAllowedHandlerForInvalidMethod(): void
     {
-        $router = new Router($this->container, function (RouteCollector $r) {
+        $dispatcher = FastRoute::recommendedSettings(function (ConfigureRoutes $r) {
             $r->get('/', Home::class);
-        });
+        }, __FUNCTION__)->dispatcher();
+        $router = new Router($this->container, $dispatcher);
         $result = $router->route(new ServerRequest('POST', 'https://localhost:8080/'));
 
         self::assertEquals(405, $result->getStatusCode());
@@ -33,9 +32,10 @@ final class RouterTest extends TestCase {
 
     public function testReturnsNotFoundHandlerForNotFound(): void
     {
-        $router = new Router($this->container, function (RouteCollector $r) {
+        $dispatcher = FastRoute::recommendedSettings(function (ConfigureRoutes $r) {
             $r->get('/', Home::class);
-        });
+        }, __FUNCTION__)->dispatcher();
+        $router = new Router($this->container, $dispatcher);
         $result = $router->route(
             new ServerRequest('GET', 'https://localhost:8080/rainbows')
         );
@@ -47,12 +47,12 @@ final class RouterTest extends TestCase {
     {
         $handler = new HandlerMock();
         $this->container->method('get')->willReturn($handler);
-
-        $router = new Router($this->container, function (RouteCollector $r) {
+        $dispatcher = FastRoute::recommendedSettings(function (ConfigureRoutes $r) {
             $r->get('/rainbows/{a}/{b}', HandlerMock::class);
-        });
+        }, __FUNCTION__)->dispatcher();
 
-        $request =new ServerRequest('GET', 'https://localhost:8080/rainbows/111/222');
+        $router = new Router($this->container, $dispatcher);
+        $request = new ServerRequest('GET', 'https://localhost:8080/rainbows/111/222');
         $result = $router->route($request);
 
         self::assertJsonStringEqualsJsonString(
