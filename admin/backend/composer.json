@@ -30,7 +30,8 @@
         "phpstan/phpstan": "^1.0",
         "phpunit/phpunit": "^11.4",
         "thecodingmachine/phpstan-safe-rule": "^1.2",
-        "phpstan/extension-installer": "^1.4"
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan-strict-rules": "^1.6"
     },
     "config": {
         "allow-plugins": {
