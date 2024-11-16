@@ -23,7 +23,7 @@ final class RouterTest extends TestCase {
     {
         $dispatcher = FastRoute::recommendedSettings(function (ConfigureRoutes $r) {
             $r->get('/', Home::class);
-        }, __FUNCTION__)->dispatcher();
+        }, __FUNCTION__)->disableCache()->dispatcher();
         $router = new Router($this->container, $dispatcher);
         $result = $router->route(new ServerRequest('POST', 'https://localhost:8080/'));
 
@@ -34,7 +34,7 @@ final class RouterTest extends TestCase {
     {
         $dispatcher = FastRoute::recommendedSettings(function (ConfigureRoutes $r) {
             $r->get('/', Home::class);
-        }, __FUNCTION__)->dispatcher();
+        }, __FUNCTION__)->disableCache()->dispatcher();
         $router = new Router($this->container, $dispatcher);
         $result = $router->route(
             new ServerRequest('GET', 'https://localhost:8080/rainbows')
@@ -49,7 +49,7 @@ final class RouterTest extends TestCase {
         $this->container->method('get')->willReturn($handler);
         $dispatcher = FastRoute::recommendedSettings(function (ConfigureRoutes $r) {
             $r->get('/rainbows/{a}/{b}', HandlerMock::class);
-        }, __FUNCTION__)->dispatcher();
+        }, __FUNCTION__)->disableCache()->dispatcher();
 
         $router = new Router($this->container, $dispatcher);
         $request = new ServerRequest('GET', 'https://localhost:8080/rainbows/111/222');
