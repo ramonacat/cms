@@ -12,6 +12,7 @@ use Psr\Http\Message\StreamFactoryInterface;
 use Ramona\CMS\Admin\Home;
 use Ramona\CMS\Admin\Login;
 use Ramona\CMS\Admin\Router;
+use Ramona\CMS\Admin\TemplateFactory;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -33,6 +34,7 @@ $container = new \DI\Container([
     ResponseFactoryInterface::class => \DI\get(Psr17Factory::class),
     StreamFactoryInterface::class => \DI\get(Psr17Factory::class),
     GenerateUri::class => $fastRoute->uriGenerator(),
+    TemplateFactory::class => fn () => new TemplateFactory(__DIR__ . '/../src/templates/'),
 ]);
 
 $requestCreator = new ServerRequestCreator(

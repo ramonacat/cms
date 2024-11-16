@@ -9,10 +9,9 @@ pushd backend
 ./vendor/bin/phpunit
 ./vendor/bin/ecs --fix
 
-php -S localhost:7979 -t public/ &
-PHP_PID=$!
-popd
-pushd tests
-npm run test
-popd
-kill $PHP_PID
+php -S localhost:7979 -t public/
+function on_exit {
+    popd
+}
+
+trap on_exit EXIT
