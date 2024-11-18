@@ -5,6 +5,7 @@ set -x
 
 rm -f $(php -r "echo sys_get_temp_dir();")/cms-routes
 pushd frontend
+    tsc
     npm run dev &
     VITE_PID=$!
 popd

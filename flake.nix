@@ -17,6 +17,7 @@
         php83Packages.composer
         phpactor
         (php83.buildEnv {extensions = {enabled, all}: enabled ++ [all.xdebug];})
+        typescript
       ];
     };
   };

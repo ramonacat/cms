@@ -3,6 +3,9 @@
 set -euo pipefail
 set -x
 
+pushd frontend
+    tsc
+popd
 rm -f $(php -r "echo sys_get_temp_dir();")/cms-routes
 pushd backend
 ./vendor/bin/phpstan
