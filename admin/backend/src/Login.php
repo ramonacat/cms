@@ -9,6 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use RuntimeException;
 
 final class Login implements RequestHandlerInterface
 {
@@ -16,22 +17,22 @@ final class Login implements RequestHandlerInterface
         private ResponseFactoryInterface $responseFactory,
         private StreamFactoryInterface $streamFactory,
         private TemplateFactory $templateFactory,
-        private CSSModuleLoader $cssModuleLoader,
         private FrontendModuleLoader $frontendModuleLoader,
     ) {
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $frontendModule = $this->frontendModuleLoader->load('login');
         $loginTemplate = $this->templateFactory->create(
             'user/login.php',
-            new LoginView($this->cssModuleLoader->load('login'))
+            new LoginView($frontendModule->cssModule ?? throw new RuntimeException('Missing login CSS module'))
         );
         $layoutView = $this->templateFactory->create(
             'layout.php',
             new LayoutView(
                 $loginTemplate,
-                [$this->frontendModuleLoader->load('login')]
+                [$frontendModule]
             )
         );
 

@@ -12,7 +12,8 @@ final readonly class FrontendModuleLoader
 {
     public function __construct(
         private string $baseUrl,
-        private string $manifestPath
+        private string $manifestPath,
+        private CSSModuleLoader $cssModuleLoader
     ) {
     }
 
@@ -39,7 +40,12 @@ final readonly class FrontendModuleLoader
                 $module['css']
             );
 
-            return new FrontendModule($key, $cssFiles, $javascriptFiles);
+            return new FrontendModule(
+                $key,
+                $cssFiles,
+                $javascriptFiles,
+                $this->cssModuleLoader->load($name)
+            );
         }
 
         throw new RuntimeException("Module {$name} not found");

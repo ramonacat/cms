@@ -7,6 +7,7 @@ use FastRoute\GenerateUri;
 use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7Server\ServerRequestCreator;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Ramona\CMS\Admin\CSSModuleLoader;
@@ -38,10 +39,15 @@ $container = new \DI\Container([
     GenerateUri::class => $fastRoute->uriGenerator(),
     TemplateFactory::class => fn () => new TemplateFactory(__DIR__ . '/../src/templates/'),
     CSSModuleLoader::class => fn () => new CSSModuleLoader(__DIR__ . '/../../frontend/dist-server/css-modules/'),
-    FrontendModuleLoader::class => fn () => new FrontendModuleLoader(
-        'https://localhost:5173/',
-        __DIR__ . '/../../frontend/dist/.vite/manifest.json'
-    ),
+    FrontendModuleLoader::class => function (ContainerInterface $c) {
+        $cssModuleLoader = $c->get(CSSModuleLoader::class);
+        /** @var CSSModuleLoader $cssModuleLoader */
+        return new FrontendModuleLoader(
+            'https://localhost:5173/',
+            __DIR__ . '/../../frontend/dist/.vite/manifest.json',
+            $cssModuleLoader
+        );
+    },
 ]);
 
 $requestCreator = new ServerRequestCreator(

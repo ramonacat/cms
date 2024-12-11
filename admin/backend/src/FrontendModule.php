@@ -13,7 +13,8 @@ final readonly class FrontendModule
     public function __construct(
         public string $key,
         public array $cssFiles,
-        public array $jsFiles
+        public array $jsFiles,
+        public ?CSSModule $cssModule
     ) {
     }
 }
