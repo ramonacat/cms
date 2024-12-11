@@ -9,6 +9,8 @@ use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7Server\ServerRequestCreator;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
+use Ramona\CMS\Admin\CSSModuleLoader;
+use Ramona\CMS\Admin\FrontendModuleLoader;
 use Ramona\CMS\Admin\Home;
 use Ramona\CMS\Admin\Login;
 use Ramona\CMS\Admin\Router;
@@ -35,6 +37,11 @@ $container = new \DI\Container([
     StreamFactoryInterface::class => \DI\get(Psr17Factory::class),
     GenerateUri::class => $fastRoute->uriGenerator(),
     TemplateFactory::class => fn () => new TemplateFactory(__DIR__ . '/../src/templates/'),
+    CSSModuleLoader::class => fn () => new CSSModuleLoader(__DIR__ . '/../../frontend/dist-server/css-modules/'),
+    FrontendModuleLoader::class => fn () => new FrontendModuleLoader(
+        'https://localhost:5173/',
+        __DIR__ . '/../../frontend/dist/.vite/manifest.json'
+    ),
 ]);
 
 $requestCreator = new ServerRequestCreator(

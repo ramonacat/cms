@@ -1,5 +1,6 @@
+<?php /** @var \Ramona\CMS\Admin\LoginView $model */ ?>
 <form action="" method="POST">
-    <div>
+    <div class="<?= $model->cssModule->classFor('username')?>">
         <label for="<?= ($usernameId = uniqid('username'))?>">
             username
         </label>

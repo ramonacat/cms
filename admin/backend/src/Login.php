@@ -15,14 +15,25 @@ final class Login implements RequestHandlerInterface
     public function __construct(
         private ResponseFactoryInterface $responseFactory,
         private StreamFactoryInterface $streamFactory,
-        private TemplateFactory $templateFactory
+        private TemplateFactory $templateFactory,
+        private CSSModuleLoader $cssModuleLoader,
+        private FrontendModuleLoader $frontendModuleLoader,
     ) {
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $loginTemplate = $this->templateFactory->create('user/login.php', new LoginView());
-        $layoutView = $this->templateFactory->create('layout.php', new LayoutView($loginTemplate));
+        $loginTemplate = $this->templateFactory->create(
+            'user/login.php',
+            new LoginView($this->cssModuleLoader->load('login'))
+        );
+        $layoutView = $this->templateFactory->create(
+            'layout.php',
+            new LayoutView(
+                $loginTemplate,
+                [$this->frontendModuleLoader->load('login')]
+            )
+        );
 
         return $this
             ->responseFactory

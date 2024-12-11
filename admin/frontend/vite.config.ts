@@ -11,6 +11,7 @@ export default defineConfig({
       rollupOptions: {
         input: {
             main: './src/main.ts',
+            login: './src/login.module.css'
         }
       }
   }

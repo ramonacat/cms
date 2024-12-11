@@ -9,9 +9,11 @@ final readonly class LayoutView
     /**
      * @template T of object
      * @param Template<T> $body
+     * @param list<FrontendModule> $frontendModules
      */
     public function __construct(
-        public Template $body
+        public Template $body,
+        public array $frontendModules
     ) {
     }
 }
