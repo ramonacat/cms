@@ -5,7 +5,7 @@ set -x
 
 pushd frontend
     tsc
-    npx tsx gen-modules.ts
+    npx tsx gen-modules-run.ts
 popd
 rm -f $(php -r "echo sys_get_temp_dir();")/cms-routes
 pushd backend
