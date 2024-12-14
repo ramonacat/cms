@@ -6,6 +6,7 @@ set -x
 rm -f $(php -r "echo sys_get_temp_dir();")/cms-routes
 pushd frontend
     tsc
+    npx prettier --write .
     npx tsx gen-modules-run.ts
     npm run dev &
     VITE_PID=$!
