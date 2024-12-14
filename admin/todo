@@ -1,0 +1,2 @@
+1. Regen HMR modules for PHP when vite hot-reloads, so a refresh is enough to get styles working
+

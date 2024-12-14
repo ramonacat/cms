@@ -1,1 +1,18 @@
-.username { color: purple; }
+.login-form { 
+    display: grid;
+    place-items: center;
+    height: 100%;
+
+    label, input {
+        display: block;
+    }
+
+    button {
+        display: block;
+        margin-left: auto;
+    }
+
+    label, input, button {
+        margin-top: 0.5rem;
+    }
+}
