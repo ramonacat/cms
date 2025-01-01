@@ -18,6 +18,7 @@
         phpactor
         (php83.buildEnv {extensions = {enabled, all}: enabled ++ [all.xdebug];})
         typescript
+        postgresql_17
       ];
     };
   };

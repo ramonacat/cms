@@ -17,10 +17,12 @@ pushd backend
 ./vendor/bin/phpunit
 ./vendor/bin/ecs --fix
 
+./db.sh start
 php -S localhost:7979 -t public/
 function on_exit {
     popd
     kill $VITE_PID
+    ./db.sh stop
 }
 
 trap on_exit EXIT

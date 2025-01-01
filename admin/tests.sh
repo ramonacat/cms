@@ -13,6 +13,7 @@ pushd backend
 ./vendor/bin/phpstan
 ./vendor/bin/phpunit
 ./vendor/bin/ecs --fix
+./db.sh start
 
 php -S localhost:7979 -t public/ &
 PHP_PID=$!
@@ -21,3 +22,4 @@ pushd tests
 npm run test
 popd
 kill $PHP_PID
+./db.sh stop

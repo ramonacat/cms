@@ -3,3 +3,6 @@ node_modules/
 vendor/
 .phpunit.cache/
 coverage/
+.tmp/
+.s.PGSQL*
+.vscode/
