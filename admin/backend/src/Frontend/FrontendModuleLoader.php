@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ramona\CMS\Admin;
+namespace Ramona\CMS\Admin\Frontend;
 
 use RuntimeException;
 use function Safe\file_get_contents;

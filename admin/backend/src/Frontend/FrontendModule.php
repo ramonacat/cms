@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ramona\CMS\Admin;
+namespace Ramona\CMS\Admin\Frontend;
 
 final readonly class FrontendModule
 {

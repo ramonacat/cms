@@ -2,16 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Ramona\CMS\Admin;
+namespace Ramona\CMS\Admin\Authentication;
 
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Ramona\CMS\Admin\Frontend\FrontendModuleLoader;
+use Ramona\CMS\Admin\LayoutView;
+use Ramona\CMS\Admin\TemplateFactory;
 use RuntimeException;
 
-final class Login implements RequestHandlerInterface
+final class GetLogin implements RequestHandlerInterface
 {
     public function __construct(
         private ResponseFactoryInterface $responseFactory,

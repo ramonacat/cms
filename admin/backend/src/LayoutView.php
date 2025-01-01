@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Ramona\CMS\Admin;
 
+use Ramona\CMS\Admin\Frontend\FrontendModule;
+
 final readonly class LayoutView
 {
     /**

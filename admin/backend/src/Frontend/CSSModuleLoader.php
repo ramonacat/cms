@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ramona\CMS\Admin;
+namespace Ramona\CMS\Admin\Frontend;
 
 use function Safe\file_get_contents;
 use function Safe\json_decode;

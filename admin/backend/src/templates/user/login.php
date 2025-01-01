@@ -1,4 +1,4 @@
-<?php /** @var \Ramona\CMS\Admin\LoginView $model */ ?>
+<?php /** @var \Ramona\CMS\Admin\Authentication\LoginView $model */ ?>
 <div class="<?= $model->cssModule->classFor('login-form')?>">
     <form action="" method="POST">
         <div>

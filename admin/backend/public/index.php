@@ -10,10 +10,10 @@ use Nyholm\Psr7Server\ServerRequestCreator;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
-use Ramona\CMS\Admin\CSSModuleLoader;
-use Ramona\CMS\Admin\FrontendModuleLoader;
+use Ramona\CMS\Admin\Authentication\GetLogin;
+use Ramona\CMS\Admin\Frontend\CSSModuleLoader;
+use Ramona\CMS\Admin\Frontend\FrontendModuleLoader;
 use Ramona\CMS\Admin\Home;
-use Ramona\CMS\Admin\Login;
 use Ramona\CMS\Admin\Router;
 use Ramona\CMS\Admin\TemplateFactory;
 
@@ -26,7 +26,7 @@ $fastRoute = \FastRoute\FastRoute::recommendedSettings(
         $r->get('/', Home::class, [
             ConfigureRoutes::ROUTE_NAME => 'home',
         ]);
-        $r->get('/login', Login::class, [
+        $r->get('/login', GetLogin::class, [
             ConfigureRoutes::ROUTE_NAME => 'user.login',
         ]);
     },
