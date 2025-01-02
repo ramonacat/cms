@@ -3,6 +3,7 @@
 set -euo pipefail
 set -x
 
+./db.sh start
 pushd frontend
     tsc
     npx tsx gen-modules-run.ts
@@ -13,7 +14,6 @@ pushd backend
 ./vendor/bin/phpstan
 ./vendor/bin/phpunit
 ./vendor/bin/ecs --fix
-./db.sh start
 
 php -S localhost:7979 -t public/ &
 PHP_PID=$!

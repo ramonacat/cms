@@ -2,53 +2,17 @@
 
 declare(strict_types=1);
 
-use FastRoute\ConfigureRoutes;
-use FastRoute\GenerateUri;
+use FastRoute\Dispatcher;
 use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7Server\ServerRequestCreator;
-use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
-use Psr\Http\Message\StreamFactoryInterface;
-use Ramona\CMS\Admin\Authentication\GetLogin;
-use Ramona\CMS\Admin\Frontend\CSSModuleLoader;
-use Ramona\CMS\Admin\Frontend\FrontendModuleLoader;
-use Ramona\CMS\Admin\Home;
 use Ramona\CMS\Admin\Router;
-use Ramona\CMS\Admin\TemplateFactory;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $psr17factory = new Psr17Factory();
 
-$fastRoute = \FastRoute\FastRoute::recommendedSettings(
-    function (ConfigureRoutes $r) {
-        $r->get('/', Home::class, [
-            ConfigureRoutes::ROUTE_NAME => 'home',
-        ]);
-        $r->get('/login', GetLogin::class, [
-            ConfigureRoutes::ROUTE_NAME => 'user.login',
-        ]);
-    },
-    sys_get_temp_dir() . '/cms-routes'
-);
-
-$container = new \DI\Container([
-    ResponseFactoryInterface::class => \DI\get(Psr17Factory::class),
-    StreamFactoryInterface::class => \DI\get(Psr17Factory::class),
-    GenerateUri::class => $fastRoute->uriGenerator(),
-    TemplateFactory::class => fn () => new TemplateFactory(__DIR__ . '/../src/templates/'),
-    CSSModuleLoader::class => fn () => new CSSModuleLoader(__DIR__ . '/../../frontend/dist-server/css-modules/'),
-    FrontendModuleLoader::class => function (ContainerInterface $c) {
-        $cssModuleLoader = $c->get(CSSModuleLoader::class);
-        /** @var CSSModuleLoader $cssModuleLoader */
-        return new FrontendModuleLoader(
-            'https://localhost:5173/',
-            __DIR__ . '/../../frontend/dist/.vite/manifest.json',
-            $cssModuleLoader
-        );
-    },
-]);
+$container = require_once __DIR__ . '/../src/di.php';
 
 $requestCreator = new ServerRequestCreator(
     $psr17factory,
@@ -58,7 +22,7 @@ $requestCreator = new ServerRequestCreator(
 );
 $request = $requestCreator->fromGlobals();
 
-$router = new Router($container, $fastRoute->dispatcher());
+$router = new Router($container, $container->get(Dispatcher::class));
 
 $response = $router->route($request);
 
