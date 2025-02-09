@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 DATABASE_PATH=.tmp/cmsdb/
 
 function do_pg_ctl() {

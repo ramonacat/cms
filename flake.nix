@@ -16,7 +16,12 @@
         nodejs_22
         php84Packages.composer
         phpactor
-        (php84.buildEnv {extensions = {enabled, all}: enabled ++ [all.xdebug];})
+        (php84.buildEnv {
+          extensions = {enabled, all}: enabled ++ [all.xdebug];
+          extraConfig = ''
+            error_reporting=E_ALL | ~E_DEPRECATED
+          '';
+        })
         typescript
         postgresql_17
       ];

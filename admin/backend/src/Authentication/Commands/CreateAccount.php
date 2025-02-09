@@ -6,6 +6,7 @@ namespace Ramona\CMS\Admin\Authentication\Commands;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
+use Ramona\CMS\Admin\Authentication\PasswordHasher;
 use Ramona\CMS\Admin\Authentication\User;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -34,7 +35,7 @@ final class CreateAccount extends Command
         assert(is_string($username));
         assert(is_string($password));
 
-        $user = User::create(Uuid::uuid7(), $username, $password, fn (string $rawPassword) => password_hash($rawPassword, PASSWORD_BCRYPT));
+        $user = User::create(Uuid::uuid7(), $username, $password, [PasswordHasher::class, 'hash']);
 
         $em->persist($user);
         $em->flush();

@@ -11,18 +11,22 @@ pushd frontend
     npm run dev &
     VITE_PID=$!
 popd
-pushd backend
 
-./vendor/bin/phpstan
-./vendor/bin/phpunit
-./vendor/bin/ecs --fix
-
-./db.sh start
-php -S localhost:7979 -t public/
 function on_exit {
-    popd
+    popd || true
     kill $VITE_PID
     ./db.sh stop
 }
 
 trap on_exit EXIT
+
+./db.sh start
+
+pushd backend
+
+./vendor/bin/doctrine-migrations migrate --verbose --no-interaction
+./vendor/bin/phpstan
+./vendor/bin/phpunit
+./vendor/bin/ecs --fix
+
+php -S localhost:7979 -t public/
