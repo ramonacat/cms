@@ -14,9 +14,9 @@
         nil
         nodePackages_latest.typescript-language-server
         nodejs_22
-        php83Packages.composer
+        php84Packages.composer
         phpactor
-        (php83.buildEnv {extensions = {enabled, all}: enabled ++ [all.xdebug];})
+        (php84.buildEnv {extensions = {enabled, all}: enabled ++ [all.xdebug];})
         typescript
         postgresql_17
       ];
