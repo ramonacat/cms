@@ -16,6 +16,8 @@ use RuntimeException;
 
 final class GetLogin implements RequestHandlerInterface
 {
+    public const ROUTE_NAME = 'authentication.login';
+
     public function __construct(
         private ResponseFactoryInterface $responseFactory,
         private StreamFactoryInterface $streamFactory,

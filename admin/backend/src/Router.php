@@ -8,17 +8,18 @@ use FastRoute\Dispatcher;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class Router
+final class Router implements MiddlewareInterface
 {
     public function __construct(
         private ContainerInterface $container,
-        private \FastRoute\Dispatcher $dispatcher
+        private \FastRoute\Dispatcher $dispatcher,
     ) {
     }
 
-    public function route(ServerRequestInterface $request): ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $nextHandler): ResponseInterface
     {
         $result = $this->dispatcher->dispatch(
             $request->getMethod(),
@@ -44,11 +45,12 @@ final class Router
 
             case Dispatcher::NOT_FOUND:
             default:
-                $handler = new NotFoundHandler();
+                $handler = $nextHandler;
                 break;
         }
 
         assert($handler instanceof RequestHandlerInterface);
+
         return $handler->handle($request);
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ramona\CMS\Admin\Authentication\Commands;
+namespace Ramona\CMS\Admin\Authentication\ConsoleCommands;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;

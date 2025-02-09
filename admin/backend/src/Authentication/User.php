@@ -12,7 +12,7 @@ use Ramsey\Uuid\UuidInterface;
 final class User
 {
     #[ORM\Id]
-    #[ORM\Column('id', 'guid')]
+    #[ORM\Column('id', 'uuid')]
     private readonly UuidInterface $id;
 
     #[ORM\Column('username', 'string')]
@@ -37,6 +37,14 @@ final class User
     public static function create(UuidInterface $id, string $username, string $password, callable $hashPassword): self
     {
         return new self($id, $username, $password, $hashPassword);
+    }
+
+    /**
+     * @param callable(string, string):bool $check
+     */
+    public function checkPassword(string $password, callable $check): bool
+    {
+        return $check($password, $this->passwordHash);
     }
 
     public function id(): UuidInterface
