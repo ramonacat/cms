@@ -23,7 +23,7 @@
         "psr/http-server-middleware": "^1.0",
         "psr/container": "^2.0",
         "php-di/php-di": "^7.0",
-        "thecodingmachine/safe": "^2.5",
+        "thecodingmachine/safe": "^3.0",
         "doctrine/migrations": "^3.8",
         "doctrine/orm": "^3.3",
         "ramsey/uuid": "^4.7",
@@ -36,12 +36,11 @@
     },
     "require-dev": {
         "symplify/easy-coding-standard": "^12.3",
-        "phpstan/phpstan": "^1.0",
+        "phpstan/phpstan": "^2.0",
         "phpunit/phpunit": "^11.4",
-        "thecodingmachine/phpstan-safe-rule": "^1.2",
+        "thecodingmachine/phpstan-safe-rule": "^1.4",
         "phpstan/extension-installer": "^1.4",
-        "phpstan/phpstan-strict-rules": "^1.6",
-        "thecodingmachine/phpstan-strict-rules": "^1.0"
+        "phpstan/phpstan-strict-rules": "^2.0"
     },
     "config": {
         "allow-plugins": {

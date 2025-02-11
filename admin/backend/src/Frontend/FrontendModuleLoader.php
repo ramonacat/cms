@@ -39,6 +39,7 @@ final readonly class FrontendModuleLoader
                 fn (string $path) => $this->baseUrl . '/' . $path,
                 $module['css']
             );
+            assert(array_is_list($cssFiles));
 
             return new FrontendModule(
                 $key,

@@ -28,13 +28,13 @@ final class Router implements MiddlewareInterface
 
         switch ($result[0]) {
             case Dispatcher::METHOD_NOT_ALLOWED:
-                /** @var array{int, list<string>} $result */
-                $handler = new MethodNotAllowedHandler($result[1]);
+                /** @var list<string> $allowedMethods */
+                $allowedMethods = $result[1];
+                $handler = new MethodNotAllowedHandler($allowedMethods);
                 break;
 
             case Dispatcher::FOUND:
-                assert(is_string($result[1]) && class_exists($result[1]));
-                /** @var array{int, class-string, array<string, string>} $result */
+                assert(is_string($result[1]) && class_exists($result[1]) && is_iterable($result[2]));
                 $handler = $this->container->get($result[1]);
 
                 foreach ($result[2] as $variableName => $variableValue) {

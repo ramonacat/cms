@@ -27,9 +27,6 @@ final class Template
         $model = $this->model;
         require $this->path;
 
-        $result = ob_get_clean();
-        assert($result !== false);
-
-        return $result;
+        return \Safe\ob_get_clean();
     }
 }
