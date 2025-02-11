@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Ramona\CMS\Admin\Authentication\ConsoleCommands;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
-use Ramona\CMS\Admin\Authentication\PasswordHasher;
-use Ramona\CMS\Admin\Authentication\User;
-use Ramsey\Uuid\Uuid;
+use Ramona\CMS\Admin\Authentication\Services\User as UserService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -26,8 +23,8 @@ final class CreateAccount extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        /** @var EntityManagerInterface $em */
-        $em = $this->container->get(EntityManagerInterface::class);
+        /** @var UserService $userService */
+        $userService = $this->container->get(UserService::class);
 
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
@@ -35,10 +32,7 @@ final class CreateAccount extends Command
         assert(is_string($username));
         assert(is_string($password));
 
-        $user = User::create(Uuid::uuid7(), $username, $password, [PasswordHasher::class, 'hash']);
-
-        $em->persist($user);
-        $em->flush();
+        $userService->createAccount($username, $password);
 
         return self::SUCCESS;
     }

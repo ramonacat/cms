@@ -43,15 +43,20 @@ final class PostLogin implements RequestHandlerInterface
             );
 
         if ($authResult) {
-            $response = $this->responseFactory->createResponse(302)->withHeader('Location', $this->uriGenerator->forRoute(Home::ROUTE_NAME));
-
-            return $response;
+            return $this
+                ->responseFactory
+                ->createResponse(302)
+                ->withHeader('Location', $this->uriGenerator->forRoute(Home::ROUTE_NAME));
         }
 
         $response = $this
             ->responseFactory
             ->createResponse(200, 'OK');
-        $response->getBody()->write('Incorrect username/password'); // todo redirect to GetLogin, with an error message
+
+        $response
+            ->getBody()
+            ->write('Incorrect username/password'); // todo redirect to GetLogin, with an error message
+
         return $response;
 
     }

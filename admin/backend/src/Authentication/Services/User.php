@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use PSR7Sessions\Storageless\Session\SessionInterface;
 use Ramona\CMS\Admin\Authentication\PasswordHasher;
 use Ramona\CMS\Admin\Authentication\User as UserEntity;
+use Ramsey\Uuid\Uuid;
 
 final class User
 {
@@ -16,6 +17,15 @@ final class User
     public function __construct(
         private EntityManagerInterface $entityManager
     ) {
+    }
+
+    public function createAccount(string $username, string $password): void
+    {
+        $user = UserEntity::create(Uuid::uuid7(), $username, $password, [PasswordHasher::class, 'hash']);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
     }
 
     public function login(SessionInterface $session, string $username, string $password): bool

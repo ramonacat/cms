@@ -24,9 +24,10 @@ trap on_exit EXIT
 
 pushd backend
 
-./vendor/bin/doctrine-migrations migrate --verbose --no-interaction
 ./vendor/bin/phpstan
 ./vendor/bin/phpunit
 ./vendor/bin/ecs --fix
+
+./vendor/bin/doctrine-migrations migrate --verbose --no-interaction
 
 php -S localhost:7979 -t public/

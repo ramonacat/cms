@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Dflydev\FigCookies\Modifier\SameSite;
+use Dflydev\FigCookies\SetCookie;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -70,10 +72,12 @@ $container = new \DI\Container([
         $router = $container->get(Router::class);
         $pipe = new \Laminas\Stratigility\MiddlewarePipe();
         $pipe->pipe(new SessionMiddleware(
-            new Configuration(\Lcobucci\JWT\Configuration::forSymmetricSigner(
+            (new Configuration(\Lcobucci\JWT\Configuration::forSymmetricSigner(
                 new Sha256(),
                 InMemory::base64Encoded('oCYq82M/naO5GaVPUBYgKtJMz9TkFRhv4hDEN0Hq4xE=') // TODO: for prod this must be an actual secure key
-            ))
+            )))
+            // TODO: use default cookie settings for prod!
+                ->withCookie(SetCookie::create('slsession')->withHttpOnly(true)->withSameSite(SameSite::lax())->withPath('/'))
         ));
         $pipe->pipe($router);
 
