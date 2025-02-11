@@ -9,6 +9,7 @@ return ECSConfig::configure()
     ->withPaths([
         __DIR__ . '/public',
         __DIR__ . '/src',
+        __DIR__ . '/bin',
         __FILE__,
     ])
     ->withPreparedSets(
