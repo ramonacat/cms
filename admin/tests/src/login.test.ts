@@ -38,6 +38,6 @@ describe('login page', () => {
         ]);
 
         expect(page.url()).toBe(BASE_URL + '/login');
-        expect((await page.content())).toContain('Incorrect username/password');
+        expect((await page.content())).toContain('Incorrect username or password');
     });
 });

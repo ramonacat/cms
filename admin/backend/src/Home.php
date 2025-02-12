@@ -29,9 +29,9 @@ final class Home implements RequestHandlerInterface
         $session = $request->getAttribute(SessionMiddleware::SESSION_ATTRIBUTE);
         assert($session instanceof SessionInterface);
 
-        $loggedInUsername = $this->userService->loggedInUsername($session);
+        $user = $this->userService->currentlyLoggedIn($session);
 
-        if ($loggedInUsername === null) {
+        if ($user === null) {
             return $this
                 ->responseFactory
                 ->createResponse(code: 302)
@@ -42,7 +42,7 @@ final class Home implements RequestHandlerInterface
             ->createResponse(302);
 
         // TODO: Render a template here with the admin homepage
-        $response->getBody()->write('Logged in as: ' . $loggedInUsername);
+        $response->getBody()->write('Logged in as: ' . $user->username());
 
         return $response;
 

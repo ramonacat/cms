@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+set -x
+
 while getopts "p:" opt; do
     case "$opt" in
         p) DATABASE_PATH=$OPTARG ;;
@@ -28,6 +31,9 @@ if [[ "$1" == "start" ]]; then
         initdb -D "$DATABASE_PATH"
 
         do_pg_ctl start
+
+        sleep 1
+
         createdb -h "$PWD" cms
     fi
 elif [[ "$1" == "stop" ]]; then

@@ -6,6 +6,7 @@
   label,
   input {
     display: block;
+    width: 100%;
   }
 
   button {
@@ -18,4 +19,14 @@
   button {
     margin-top: 0.5rem;
   }
+
+}
+
+.row {
+  width: 200px;
+  margin: 0 auto;
+}
+
+.form-error {
+  color: red;
 }

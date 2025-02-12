@@ -46,7 +46,7 @@ final class User
         return $result;
     }
 
-    public function loggedInUsername(SessionInterface $session): ?string
+    public function currentlyLoggedIn(SessionInterface $session): ?LoggedInUser
     {
         $userId = $session->get(self::SESSION_USER_ID);
 
@@ -61,6 +61,6 @@ final class User
             return null;
         }
 
-        return $user->username();
+        return new LoggedInUser($user->id(), $user->username());
     }
 }
