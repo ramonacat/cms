@@ -7,7 +7,7 @@ namespace Ramona\CMS\Admin;
 use function Safe\ob_start;
 
 /**
- * @template TModel of object
+ * @template-covariant TModel of object
  */
 final class Template
 {

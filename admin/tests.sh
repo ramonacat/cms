@@ -25,6 +25,8 @@ function on_exit() {
     do_db stop
 }
 
+trap on_exit EXIT
+
 pushd frontend
     tsc
     npx tsx gen-modules-run.ts
@@ -47,7 +49,6 @@ pushd backend
     PHP_PID=$!
 popd
 
-trap on_exit EXIT
 
 pushd tests
     npm run test

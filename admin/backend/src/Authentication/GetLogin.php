@@ -9,11 +9,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Ramona\CMS\Admin\Frontend\FrontendModuleLoader;
 use Ramona\CMS\Admin\LayoutView;
-use Ramona\CMS\Admin\TemplateFactory;
 use Ramona\CMS\Admin\UI\Form;
-use RuntimeException;
+use Ramona\CMS\Admin\UI\ViewRenderer;
 
 final class GetLogin implements RequestHandlerInterface
 {
@@ -22,32 +20,27 @@ final class GetLogin implements RequestHandlerInterface
     public function __construct(
         private ResponseFactoryInterface $responseFactory,
         private StreamFactoryInterface $streamFactory,
-        private TemplateFactory $templateFactory,
-        private FrontendModuleLoader $frontendModuleLoader,
+        private ViewRenderer $viewRenderer
     ) {
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $frontendModule = $this->frontendModuleLoader->load('login');
-        $loginTemplate = $this->templateFactory->create(
-            'user/login.php',
+        $loginTemplate = $this->viewRenderer->render(
             new LoginView(
-                $frontendModule->cssModule ?? throw new RuntimeException('Missing login CSS module'),
                 new Form([])
             )
         );
-        $layoutView = $this->templateFactory->create(
-            'layout.php',
+        $layoutTemplate = $this->viewRenderer->render(
             new LayoutView(
                 $loginTemplate,
-                [$frontendModule]
+                ['login']
             )
         );
 
         return $this
             ->responseFactory
             ->createResponse(200, 'OK')
-            ->withBody($this->streamFactory->createStream($layoutView->render()));
+            ->withBody($this->streamFactory->createStream($layoutTemplate->render()));
     }
 }

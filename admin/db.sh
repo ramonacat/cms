@@ -32,8 +32,6 @@ if [[ "$1" == "start" ]]; then
 
         do_pg_ctl start
 
-        sleep 1
-
         createdb -h "$PWD" cms
     fi
 elif [[ "$1" == "stop" ]]; then

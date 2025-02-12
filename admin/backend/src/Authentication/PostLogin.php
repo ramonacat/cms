@@ -8,16 +8,13 @@ use FastRoute\GenerateUri;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use PSR7Sessions\Storageless\Http\SessionMiddleware;
 use PSR7Sessions\Storageless\Session\SessionInterface;
-use Ramona\CMS\Admin\Frontend\FrontendModuleLoader;
 use Ramona\CMS\Admin\Home;
 use Ramona\CMS\Admin\LayoutView;
-use Ramona\CMS\Admin\TemplateFactory;
 use Ramona\CMS\Admin\UI\Form;
-use RuntimeException;
+use Ramona\CMS\Admin\UI\ViewRenderer;
 
 final class PostLogin implements RequestHandlerInterface
 {
@@ -25,9 +22,7 @@ final class PostLogin implements RequestHandlerInterface
         private ResponseFactoryInterface $responseFactory,
         private \Ramona\CMS\Admin\Authentication\Services\User $userService,
         private GenerateUri $uriGenerator,
-        private FrontendModuleLoader $frontendModuleLoader,
-        private TemplateFactory $templateFactory,
-        private StreamFactoryInterface $streamFactory
+        private ViewRenderer $viewRenderer
     ) {
 
     }
@@ -58,26 +53,14 @@ final class PostLogin implements RequestHandlerInterface
                 ->withHeader('Location', $this->uriGenerator->forRoute(Home::ROUTE_NAME));
         }
 
-        $frontendModule = $this->frontendModuleLoader->load('login');
-        $loginTemplate = $this->templateFactory->create(
-            'user/login.php',
-            new LoginView(
-                $frontendModule->cssModule ?? throw new RuntimeException('Missing login CSS module'),
-                new Form(['Incorrect username or password'])
-            )
-        );
-        $layoutView = $this->templateFactory->create(
-            'layout.php',
-            new LayoutView(
-                $loginTemplate,
-                [$frontendModule]
-            )
-        );
+        $loginTemplate = $this->viewRenderer->render(new LoginView(new Form(['Incorrect username or password'])));
+        $layoutTemplate = $this->viewRenderer->render(new LayoutView($loginTemplate, ['login']));
 
-        return $this
+        $response = $this
             ->responseFactory
-            ->createResponse(200, 'OK')
-            ->withBody($this->streamFactory->createStream($layoutView->render()));
+            ->createResponse(200, 'OK');
 
+        $response->getBody()->write($layoutTemplate->render());
+        return $response;
     }
 }
