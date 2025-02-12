@@ -3,7 +3,8 @@
 set -euo pipefail
 set -x
 
-rm -f $(php -r "echo sys_get_temp_dir();")/cms-routes
+rm -f "$(php -r "echo sys_get_temp_dir();")/cms-routes"
+https://alchemist.dk
 pushd frontend
     tsc
     npx prettier --write .

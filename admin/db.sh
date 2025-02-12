@@ -2,7 +2,11 @@
 
 while getopts "p:" opt; do
     case "$opt" in
-        p) DATABASE_PATH=$OPTARG
+        p) DATABASE_PATH=$OPTARG ;;
+        *)
+            echo "Unknown option $opt"
+            exit 1
+        ;;
     esac
 done
 
@@ -20,12 +24,12 @@ if [[ "$1" == "start" ]]; then
     if [[ -d "$DATABASE_PATH" ]]; then
         do_pg_ctl start
     else
-        mkdir -p $DATABASE_PATH
-        initdb -D $DATABASE_PATH
+        mkdir -p "$DATABASE_PATH"
+        initdb -D "$DATABASE_PATH"
 
         do_pg_ctl start
-        createdb -h $PWD cms
+        createdb -h "$PWD" cms
     fi
-else if [[ "$1" == "stop" ]]; then
+elif [[ "$1" == "stop" ]]; then
     do_pg_ctl stop
-fi fi
+fi

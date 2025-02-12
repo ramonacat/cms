@@ -24,6 +24,7 @@
         })
         typescript
         postgresql_17
+        shellcheck
       ];
     };
   };

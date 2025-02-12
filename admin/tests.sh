@@ -3,6 +3,8 @@
 set -euo pipefail
 set -x
 
+shellcheck ./**.sh
+
 DATABASE_PATH=.tmp/cmsdb-tests/
 function do_db() {
     ./db.sh -p "${DATABASE_PATH}" "$@"
@@ -29,7 +31,7 @@ pushd frontend
     npm run build
 popd
 
-rm -f $(php -r "echo sys_get_temp_dir();")/cms-routes
+rm -f "$(php -r "echo sys_get_temp_dir();")/cms-routes"
 
 pushd backend
     ./vendor/bin/phpstan
