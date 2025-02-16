@@ -11,6 +11,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use PSR7Sessions\Storageless\Http\SessionMiddleware;
 use PSR7Sessions\Storageless\Session\SessionInterface;
+use Ramona\CMS\Admin\Authentication\Services\User;
 use Ramona\CMS\Admin\Home;
 use Ramona\CMS\Admin\LayoutView;
 use Ramona\CMS\Admin\UI\Form;
@@ -20,7 +21,7 @@ final class PostLogin implements RequestHandlerInterface
 {
     public function __construct(
         private ResponseFactoryInterface $responseFactory,
-        private \Ramona\CMS\Admin\Authentication\Services\User $userService,
+        private User $userService,
         private GenerateUri $uriGenerator,
         private ViewRenderer $viewRenderer
     ) {

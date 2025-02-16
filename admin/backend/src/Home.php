@@ -12,6 +12,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use PSR7Sessions\Storageless\Http\SessionMiddleware;
 use PSR7Sessions\Storageless\Session\SessionInterface;
 use Ramona\CMS\Admin\Authentication\GetLogin;
+use Ramona\CMS\Admin\Authentication\Services\User;
 
 final class Home implements RequestHandlerInterface
 {
@@ -20,7 +21,7 @@ final class Home implements RequestHandlerInterface
     public function __construct(
         private ResponseFactoryInterface $responseFactory,
         private GenerateUri $urlGenerator,
-        private \Ramona\CMS\Admin\Authentication\Services\User $userService
+        private User $userService
     ) {
     }
 

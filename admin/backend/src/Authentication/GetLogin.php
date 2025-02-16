@@ -26,17 +26,8 @@ final class GetLogin implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $loginTemplate = $this->viewRenderer->render(
-            new LoginView(
-                new Form([])
-            )
-        );
-        $layoutTemplate = $this->viewRenderer->render(
-            new LayoutView(
-                $loginTemplate,
-                ['login']
-            )
-        );
+        $loginTemplate = $this->viewRenderer->render(new LoginView(new Form([])));
+        $layoutTemplate = $this->viewRenderer->render(new LayoutView($loginTemplate, ['login']));
 
         return $this
             ->responseFactory
