@@ -9,7 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Ramona\CMS\Admin\LayoutView;
+use Ramona\CMS\Admin\LoginLayoutView;
 use Ramona\CMS\Admin\UI\Form;
 use Ramona\CMS\Admin\UI\ViewRenderer;
 
@@ -27,7 +27,7 @@ final class GetLogin implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $loginTemplate = $this->viewRenderer->render(new LoginView(new Form([])));
-        $layoutTemplate = $this->viewRenderer->render(new LayoutView($loginTemplate, ['login']));
+        $layoutTemplate = $this->viewRenderer->render(new LoginLayoutView($loginTemplate, ['login']));
 
         return $this
             ->responseFactory

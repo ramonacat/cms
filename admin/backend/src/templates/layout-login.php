@@ -1,8 +1,5 @@
-<?php
-use Ramona\CMS\Admin\Home;
-
-/**
-@var \Ramona\CMS\Admin\LayoutView $model
+<?php /**
+@var \Ramona\CMS\Admin\LoginLayoutView $model
  */ ?>
 <!DOCTYPE html>
 <html>
@@ -16,15 +13,6 @@ use Ramona\CMS\Admin\Home;
     <?php endforeach; ?>
 </head>
 <body>
-    <section>
-        <div>Logged in as: <?=$model->loggedInUser->username()?></div>
-        <ul>
-            <li><a href="<?=$model->uriGenerator->forRoute(Home::ROUTE_NAME)?>">Home</a></li>
-        </ul>
-    </section>
-
-    <section>
-        <?= $model->body->render() ?>
-    </section>
+    <?= $model->body->render() ?>
 </body>
 </html>

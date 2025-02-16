@@ -21,7 +21,7 @@ final class Home implements RequestHandlerInterface
 
     public function __construct(
         private ResponseFactoryInterface $responseFactory,
-        private GenerateUri $urlGenerator,
+        private GenerateUri $uriGenerator,
         private User $userService,
         private ViewRenderer $viewRenderer
     ) {
@@ -38,11 +38,16 @@ final class Home implements RequestHandlerInterface
             return $this
                 ->responseFactory
                 ->createResponse(code: 302)
-                ->withHeader('Location', $this->urlGenerator->forRoute(GetLogin::ROUTE_NAME));
+                ->withHeader('Location', $this->uriGenerator->forRoute(GetLogin::ROUTE_NAME));
         }
 
-        $homeView = new HomeView($user);
-        $layoutView = new LayoutView($this->viewRenderer->render($homeView), []);
+        $homeView = new HomeView();
+        $layoutView = new LayoutView(
+            $this->viewRenderer->render($homeView),
+            [],
+            $user,
+            $this->uriGenerator
+        );
 
         $response = $this
             ->responseFactory

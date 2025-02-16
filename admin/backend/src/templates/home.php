@@ -1,3 +1,4 @@
-<?php /** @var \Ramona\CMS\Admin\HomeView $model */ ?>
+<?php
 
-Logged in as: <?= $model->loggedInUser->username()?>
+declare(strict_types=1);
+/** @var \Ramona\CMS\Admin\HomeView $model */

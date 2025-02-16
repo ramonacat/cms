@@ -13,7 +13,7 @@ use PSR7Sessions\Storageless\Http\SessionMiddleware;
 use PSR7Sessions\Storageless\Session\SessionInterface;
 use Ramona\CMS\Admin\Authentication\Services\User;
 use Ramona\CMS\Admin\Home;
-use Ramona\CMS\Admin\LayoutView;
+use Ramona\CMS\Admin\LoginLayoutView;
 use Ramona\CMS\Admin\UI\Form;
 use Ramona\CMS\Admin\UI\ViewRenderer;
 
@@ -55,7 +55,7 @@ final class PostLogin implements RequestHandlerInterface
         }
 
         $loginTemplate = $this->viewRenderer->render(new LoginView(new Form(['Incorrect username or password'])));
-        $layoutTemplate = $this->viewRenderer->render(new LayoutView($loginTemplate, ['login']));
+        $layoutTemplate = $this->viewRenderer->render(new LoginLayoutView($loginTemplate, ['login']));
 
         $response = $this
             ->responseFactory
