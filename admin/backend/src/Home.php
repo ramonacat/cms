@@ -13,6 +13,7 @@ use PSR7Sessions\Storageless\Http\SessionMiddleware;
 use PSR7Sessions\Storageless\Session\SessionInterface;
 use Ramona\CMS\Admin\Authentication\GetLogin;
 use Ramona\CMS\Admin\Authentication\Services\User;
+use Ramona\CMS\Admin\UI\ViewRenderer;
 
 final class Home implements RequestHandlerInterface
 {
@@ -21,7 +22,8 @@ final class Home implements RequestHandlerInterface
     public function __construct(
         private ResponseFactoryInterface $responseFactory,
         private GenerateUri $urlGenerator,
-        private User $userService
+        private User $userService,
+        private ViewRenderer $viewRenderer
     ) {
     }
 
@@ -38,12 +40,16 @@ final class Home implements RequestHandlerInterface
                 ->createResponse(code: 302)
                 ->withHeader('Location', $this->urlGenerator->forRoute(GetLogin::ROUTE_NAME));
         }
+
+        $homeView = new HomeView($user);
+        $layoutView = new LayoutView($this->viewRenderer->render($homeView), []);
+
         $response = $this
             ->responseFactory
-            ->createResponse(302);
+            ->createResponse(200);
 
         // TODO: Render a template here with the admin homepage
-        $response->getBody()->write('Logged in as: ' . $user->username());
+        $response->getBody()->write($this->viewRenderer->render($layoutView)->render());
 
         return $response;
 
