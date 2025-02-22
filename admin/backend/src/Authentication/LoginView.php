@@ -26,7 +26,11 @@ final class LoginView implements View
         FrontendModuleLoader $frontendModuleLoader,
         TemplateFactory $templateFactory
     ): Template {
-        $this->cssModule = $cssModuleLoader->load('login');
+        $cssModule = $cssModuleLoader->load('login');
+
+        assert($cssModule !== null);
+
+        $this->cssModule = $cssModule;
 
         return $templateFactory->create('user/login.php', $this);
     }

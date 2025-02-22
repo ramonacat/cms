@@ -25,6 +25,7 @@ export default defineConfig({
       input: {
         main: "./src/main.ts",
         login: "./src/login.module.css",
+        "blocks/editor": "./src/blocks/editor.tsx",
       },
     },
   },

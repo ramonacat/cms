@@ -14,9 +14,15 @@ final class CSSModuleLoader
     ) {
     }
 
-    public function load(string $name): CSSModule
+    public function load(string $name): ?CSSModule
     {
-        $rawModule = file_get_contents($this->basePath . '/' . $name . '.json');
+        $modulePath = $this->basePath . '/' . $name . '.json';
+
+        if (! file_exists($modulePath)) {
+            return null;
+        }
+
+        $rawModule = file_get_contents($modulePath);
         /** @var array<string,string> $moduleData */
         $moduleData = json_decode($rawModule, true);
 

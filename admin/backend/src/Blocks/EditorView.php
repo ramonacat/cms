@@ -2,15 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Ramona\CMS\Admin;
+namespace Ramona\CMS\Admin\Blocks;
 
 use Ramona\CMS\Admin\Frontend\CSSModuleLoader;
 use Ramona\CMS\Admin\Frontend\FrontendModuleLoader;
+use Ramona\CMS\Admin\Template;
+use Ramona\CMS\Admin\TemplateFactory;
 use Ramona\CMS\Admin\UI\ChildView;
 
-final class HomeView implements ChildView
+final class EditorView implements ChildView
 {
     public function __construct(
+        public readonly string $initialContent
     ) {
     }
 
@@ -19,11 +22,11 @@ final class HomeView implements ChildView
         FrontendModuleLoader $frontendModuleLoader,
         TemplateFactory $templateFactory
     ): Template {
-        return $templateFactory->create('home.php', $this);
+        return $templateFactory->create('blocks/editor.php', $this);
     }
 
     public function requiredFrontendModules(): array
     {
-        return [];
+        return ['blocks/editor'];
     }
 }

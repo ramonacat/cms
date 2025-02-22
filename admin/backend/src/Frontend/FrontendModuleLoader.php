@@ -37,7 +37,7 @@ final readonly class FrontendModuleLoader
 
             $cssFiles = array_map(
                 fn (string $path) => $this->baseUrl . '/' . $path,
-                $module['css']
+                $module['css'] ?? []
             );
             assert(array_is_list($cssFiles));
 

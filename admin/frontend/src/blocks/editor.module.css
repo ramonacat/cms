@@ -1,0 +1,9 @@
+.editor {
+  border: 1px solid black;
+}
+
+.toolbar {
+  button.active {
+    background-color: blue;
+  }
+}

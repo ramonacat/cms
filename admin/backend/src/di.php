@@ -19,13 +19,22 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use PSR7Sessions\Storageless\Http\Configuration;
 use PSR7Sessions\Storageless\Http\SessionMiddleware;
+use PSR7Sessions\Storageless\Session\SessionInterface;
 use Ramona\CMS\Admin\Authentication\GetLogin;
 use Ramona\CMS\Admin\Authentication\PostLogin;
+use Ramona\CMS\Admin\Authentication\Services\User;
+use Ramona\CMS\Admin\Blocks\GetBlocks;
+use Ramona\CMS\Admin\Blocks\GetEditBlock;
+use Ramona\CMS\Admin\Blocks\PostDeleteBlock;
+use Ramona\CMS\Admin\Blocks\PostEditBlock;
 use Ramona\CMS\Admin\Frontend\CSSModuleLoader;
 use Ramona\CMS\Admin\Frontend\FrontendModuleLoader;
 use Ramona\CMS\Admin\Home;
+use Ramona\CMS\Admin\LayoutView;
 use Ramona\CMS\Admin\Router;
 use Ramona\CMS\Admin\TemplateFactory;
+use Ramona\CMS\Admin\UI\LayoutRenderer;
+use Ramona\CMS\Admin\UI\ViewRenderer;
 use Ramsey\Uuid\Doctrine\UuidType;
 
 $fastRoute = \FastRoute\FastRoute::recommendedSettings(
@@ -39,6 +48,19 @@ $fastRoute = \FastRoute\FastRoute::recommendedSettings(
         $r->post('/login', PostLogin::class, [
             ConfigureRoutes::ROUTE_NAME => 'user.login.post',
         ]);
+
+        $r->get('/blocks', GetBlocks::class, [
+            ConfigureRoutes::ROUTE_NAME => GetBlocks::ROUTE_NAME,
+        ]);
+        $r->get('/blocks/edit[/{id}]', GetEditBlock::class, [
+            ConfigureRoutes::ROUTE_NAME => GetEditBlock::ROUTE_NAME,
+        ]);
+        $r->post('/blocks/edit[/{id}]', PostEditBlock::class, [
+            ConfigureRoutes::ROUTE_NAME => PostEditBlock::ROUTE_NAME,
+        ]);
+        $r->post('/blocks/delete[/{id}]', PostDeleteBlock::class, [
+            ConfigureRoutes::ROUTE_NAME => PostDeleteBlock::ROUTE_NAME,
+        ]);
     },
     sys_get_temp_dir() . '/cms-routes'
 );
@@ -50,6 +72,36 @@ $container = new \DI\Container([
     Dispatcher::class => $fastRoute->dispatcher(),
     TemplateFactory::class => fn () => new TemplateFactory(__DIR__ . '/../src/templates/'),
     CSSModuleLoader::class => fn () => new CSSModuleLoader(__DIR__ . '/../../frontend/dist-server/css-modules/'),
+    LayoutRenderer::class => function (ContainerInterface $container) {
+        /** @var ResponseFactoryInterface $responseFactory */
+        $responseFactory = $container->get(ResponseFactoryInterface::class);
+        /** @var ViewRenderer $viewRenderer */
+        $viewRenderer = $container->get(ViewRenderer::class);
+        return new LayoutRenderer(
+            static function ($child, $request) use ($container) {
+                /** @var ViewRenderer $viewRenderer */
+                $viewRenderer = $container->get(ViewRenderer::class);
+                /** @var User $userService */
+                $userService = $container->get(User::class);
+                /** @var GenerateUri $uriGenerator */
+                $uriGenerator = $container->get(GenerateUri::class);
+                $session = $request->getAttribute(SessionMiddleware::SESSION_ATTRIBUTE);
+                assert($session instanceof SessionInterface);
+
+                $user = $userService->currentlyLoggedIn($session);
+                assert($user !== null);
+
+                return new LayoutView(
+                    $viewRenderer->render($child),
+                    $child->requiredFrontendModules(),
+                    $user,
+                    $uriGenerator,
+                );
+            },
+            $responseFactory,
+            $viewRenderer
+        );
+    },
     FrontendModuleLoader::class => function (ContainerInterface $c) {
         $cssModuleLoader = $c->get(CSSModuleLoader::class);
         /** @var CSSModuleLoader $cssModuleLoader */
