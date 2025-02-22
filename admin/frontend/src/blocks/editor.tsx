@@ -44,7 +44,11 @@ function $getBlockType(selection: RangeSelection): BlockType {
     anchorNode = parent;
   }
 
-  if ($isRootNode(anchorNode) || $isParagraphNode(anchorNode) || $isTextNode(anchorNode)) {
+  if (
+    $isRootNode(anchorNode) ||
+    $isParagraphNode(anchorNode) ||
+    $isTextNode(anchorNode)
+  ) {
     return "p";
   } else if ($isHeadingNode(anchorNode)) {
     return anchorNode.getTag();
@@ -107,14 +111,17 @@ function ToolbarPlugin() {
       </select>
       <button
         onClick={(e) => {
-            e.preventDefault();
-            editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold");
+          e.preventDefault();
+          editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold");
         }}
       >
         <FaBold />
       </button>
       <button
-        onClick={e => {e.preventDefault(); editor.dispatchCommand(FORMAT_TEXT_COMMAND, "italic");}}
+        onClick={(e) => {
+          e.preventDefault();
+          editor.dispatchCommand(FORMAT_TEXT_COMMAND, "italic");
+        }}
       >
         <FaItalic />
       </button>
@@ -135,9 +142,9 @@ function Editor({
     onError: console.error,
     nodes: [HeadingNode],
     editorState: (editor: LexicalEditor) => {
-        if (initialContent.trim() === '') {
-            return;
-        }
+      if (initialContent.trim() === "") {
+        return;
+      }
       const domParser = new DOMParser();
       const domDocument = domParser.parseFromString(
         initialContent,

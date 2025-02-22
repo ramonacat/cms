@@ -29,6 +29,7 @@ trap on_exit EXIT
 
 pushd frontend
     tsc
+    npx prettier --write .
     npx tsx gen-modules-run.ts
     npm run build
 popd
