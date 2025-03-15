@@ -20,6 +20,7 @@
           extensions = {enabled, all}: enabled ++ [all.xdebug];
           extraConfig = ''
             error_reporting=E_ALL | ~E_DEPRECATED
+            memory_limit=1G
           '';
         })
         typescript
